@@ -1,0 +1,10 @@
+lint:
+    #nodejs run lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v5
+      - name: Install deps
+        run: npm install
+      - name: Lint
+        run: npm run lint
