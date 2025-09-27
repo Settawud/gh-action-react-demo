@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    environment: prod
+    environment: productionBest
     runs-on: ubuntu-latest
     steps:
       - name: Print Bun version
@@ -41,6 +41,7 @@ jobs:
           path: dist/
 
   deploy:
+    environment: testingBest
     runs-on: ubuntu-latest
     needs:
     - build
