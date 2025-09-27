@@ -1,0 +1,22 @@
+name: Lint
+on:
+  push:
+  # ทำงานตามเงื่อนไขeventที่เกิดขึ้น
+    branches:
+      - main
+      - feature/**
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+jobs:
+  lint:
+    #nodejs run lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v5
+      - name: Install deps
+        run: npm install
+      - name: Lint
+        run: npm run lint
