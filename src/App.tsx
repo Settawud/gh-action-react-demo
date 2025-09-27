@@ -48,7 +48,7 @@ function App() {
       <header className="hero">
         <span className="hero__badge">Node 19 · React Surface</span>
         <h1 className="hero__title">
-          Cyberpunk Deployment Hub
+        Hello Army
           <span className="hero__accent">Neon Build</span>
         </h1>
         <p className="hero__subtitle">
