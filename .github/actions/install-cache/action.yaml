@@ -1,0 +1,80 @@
+name: Install deps and Caching
+description: Checkout repo, setup Node, cache dependencies, and install packages
+inputs:
+  node-version:
+    description: Node.js version (e.g. 22, 20)
+    required: false
+    default: '22'
+  package-manager:
+    description: Package manager to use: npm | pnpm | yarn
+    required: false
+    default: 'npm'
+  working-directory:
+    description: Directory that contains package.json
+    required: false
+    default: '.'
+  cache-dependency-path:
+    description: Lockfile path(s) for caching (comma or newline separated). Leave empty to auto-pick.
+    required: false
+    default: ''
+  do-checkout:
+    description: Run actions/checkout first
+    required: false
+    default: 'true'
+  include-dev:
+    description: Install devDependencies (set false to omit dev)
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    # Optional checkout (เผื่ออยากทำ checkout นอก action นี้)
+    - name: Checkout
+      if: ${{ inputs.do-checkout == 'true' }}
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: ${{ inputs.package-manager }}
+        # ถ้าไม่ได้ส่ง cache-dependency-path จะ default ตาม PM + working-directory
+        cache-dependency-path: ${{ inputs.cache-dependency-path != '' && inputs.cache-dependency-path || (inputs.package-manager == 'pnpm' && format('{0}/pnpm-lock.yaml', inputs.working-directory) || (inputs.package-manager == 'yarn' && format('{0}/yarn.lock', inputs.working-directory) || format('{0}/package-lock.json', inputs.working-directory))) }}
+
+    # สำหรับ pnpm/yarn ต้อง enable corepack ก่อน
+    - name: Enable Corepack (pnpm/yarn)
+      if: ${{ inputs.package-manager != 'npm' }}
+      shell: bash
+      run: corepack enable
+
+    - name: Show versions
+      shell: bash
+      run: |
+        node -v
+        case "${{ inputs.package-manager }}" in
+          npm)  npm -v ;;
+          pnpm) pnpm -v ;;
+          yarn) yarn -v ;;
+        esac
+
+    - name: Install dependencies
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        PM="${{ inputs.package-manager }}"
+        INCLUDE_DEV="${{ inputs.include-dev }}"
+
+        if [ "$PM" = "npm" ]; then
+          # บังคับให้ติดตั้ง devDependencies เมื่อ include-dev=true
+          if [ "$INCLUDE_DEV" = "true" ]; then
+            export NPM_CONFIG_PRODUCTION=false
+          fi
+          npm ci
+        elif [ "$PM" = "pnpm" ]; then
+          pnpm install --frozen-lockfile $( [ "$INCLUDE_DEV" = "false" ] && echo '--prod' )
+        else
+          # yarn modern (berry)
+          yarn install --immutable $( [ "$INCLUDE_DEV" = "false" ] && echo '--mode=skip-build' )
+        fi
