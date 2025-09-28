@@ -67,4 +67,50 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: 'Build failed by Best!'
+          message: |
+            {
+              "username": "Deploy React CSR",
+              "embeds": [
+                {
+                  "title": "Deploy React CSR",
+                  "color": 16711680,
+                  "fields": [
+                    {
+                      "name": "Status",
+                      "value": "${{ job.status }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "${{ github.repository }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Branch",
+                      "value": "${{ github.ref }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Run Number",
+                      "value": "${{ github.run_number }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Run ID",
+                      "value": "${{ github.run_id }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Actor",
+                      "value": "${{ github.actor }}",
+                      "inline": true
+                    }
+                  ],
+                  "footer": {
+                    "text": "GitHub Actions"
+                  },
+                  "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+                }
+              ]
+            }
 
