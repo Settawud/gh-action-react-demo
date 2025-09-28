@@ -1,0 +1,17 @@
+name: Matrix
+on:
+  push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16, 18, 20]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        browser: [chrome, firefox, safari]
+    steps:
+      - name: Print Node version and test browser
+        run: |
+          echo "Node version: ${{ matrix.node }}"
+          echo "Operating System: ${{ matrix.os }}"
+          echo "Browser: ${{ matrix.browser }}"
