@@ -65,7 +65,8 @@ jobs:
     steps: 
       - name: discord notification
         env:
-          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1421697869458706533/W2UqZa7gD95EU7ixa4gQN3QLz3pWc3oFepvpv16XWxfpuMMTTiqbNULZWrBBmPfPlYBY
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1421703267464908954/W5WIqPB2xvYlb3Fw4t_1uZVM4e-6Y3BK5NZhWnlUSZN6KWXyCA0VJJAImqhvoLYUZqx_
         uses: Ilshidur/action-discord@master
         with:
           args: 'Build failed by Best!'
+
