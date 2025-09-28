@@ -12,6 +12,7 @@ jobs:
         exclude:
           - node: 20
             browser: safari
+
         include:
           - node: 22.16.0
             browser: 'edge'
