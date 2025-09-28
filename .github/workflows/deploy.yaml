@@ -39,8 +39,6 @@ jobs:
         with:
           name: dist-floder
           path: dist/
-      - name: Force failed
-        run: exit 1
 
   deploy:
     if: success()
@@ -61,11 +59,11 @@ jobs:
     needs:
       - build
       - deploy
-    if: failure()
+    if: always()
     steps: 
       - name: discord notification
         env:
-          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1421703267464908954/W5WIqPB2xvYlb3Fw4t_1uZVM4e-6Y3BK5NZhWnlUSZN6KWXyCA0VJJAImqhvoLYUZqx_
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1421697869458706533/W2UqZa7gD95EU7ixa4gQN3QLz3pWc3oFepvpv16XWxfpuMMTTiqbNULZWrBBmPfPlYBY
         uses: Ilshidur/action-discord@master
         with:
           args: 'Build failed by Best!'
