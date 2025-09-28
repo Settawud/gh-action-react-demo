@@ -17,7 +17,7 @@ jobs:
     environment: productionBest
     runs-on: ubuntu-latest
     container:
-      image: node:22.16.0
+      image: node:22
       env:
         NODE_ENV: production
     steps:
