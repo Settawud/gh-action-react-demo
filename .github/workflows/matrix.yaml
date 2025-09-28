@@ -9,6 +9,15 @@ jobs:
         node: [16, 18, 20]
         os: [ubuntu-latest, windows-latest, macos-latest]
         browser: [chrome, firefox, safari]
+        exclude:
+          - node: 22.16.0
+            browser: safari
+        include:
+          - node: 22.16.0
+            browser: 'edge'
+          - node: 22.0.0
+            browser: 'edge'
+          
     steps:
       - name: Print Node version and test browser
         run: |
